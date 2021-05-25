@@ -1,17 +1,17 @@
-from collections import defaultdict
-
-
 def resolve():
-    n = int(input())
-    Alist = list(map(int, input().split()))
-    Adict = defaultdict(int)
-    for a in Alist:
-        Adict[a] += 1
-    for i in range(1, n + 1):
-        print(Adict[i])
+    x, y = map(int, input().split())
+    if y % 2 == 0 and (2 * x <= y and 4 * x >= y):
+        print("Yes")
+    else:
+        print("No")
 
-if __name__ == "__main__":  # 提出時のみ復活させる
+
+if __name__ == "__main__":
     resolve()
+
+import sys
+from io import StringIO
+import unittest
 
 import sys
 from io import StringIO
@@ -29,40 +29,18 @@ class TestClass(unittest.TestCase):
         self.assertEqual(out, output)
 
     def test_入力例_1(self):
-        input = """5
-1 1 2 2"""
-        output = """2
-2
-0
-0
-0"""
+        input = """3 8"""
+        output = """Yes"""
         self.assertIO(input, output)
 
     def test_入力例_2(self):
-        input = """10
-1 1 1 1 1 1 1 1 1"""
-        output = """9
-0
-0
-0
-0
-0
-0
-0
-0
-0"""
+        input = """2 100"""
+        output = """No"""
         self.assertIO(input, output)
 
     def test_入力例_3(self):
-        input = """7
-1 2 3 4 5 6"""
-        output = """1
-1
-1
-1
-1
-1
-0"""
+        input = """1 2"""
+        output = """Yes"""
         self.assertIO(input, output)
 
 
