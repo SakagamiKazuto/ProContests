@@ -1,46 +1,39 @@
 # 2つ以上の隣接が存在する塊は全体でいくつか
-import sys
+field_x_length = 10
+field_y_length = 12
 
-sys.setrecursionlimit(2000)
+fields = """W . . . . . . . . W W .
+. W W W . . . . . W W W
+. . . . W W . . . W W .
+. . . . . . . . . W W .
+. . . . . . . . . W . .
+. . W . . . . . . W . .
+. W . W . . . . . W W .
+W . W . W . . . . . W .
+. W . W . . . . . . W .
+. . W . . . . . . . W .""".split("\n")
+fs = []
+for f in fields:
+    fs.append(list(f.split(" ")))
+
+
+def dfs(x, y):
+    fs[x][y] = '.'
+    for dx in [-1, 0, 1]:
+        for dy in [-1, 0, 1]:
+            nx = x + dx
+            ny = y + dy
+            if (0 <= nx and nx < field_x_length and 0 <= ny and ny < field_y_length and fs[nx][ny] == 'W'):
+                dfs(nx, ny)
 
 def resolve():
-    n = int(input())
-    m = int(input())
-    a = []
-    for i in range(n):
-        a.append(list(map(str, input().split())))
-
-    def dfs(y, x):
-        a[y][x] = "."
-
-        for dx in [-1, 0, 1]:
-            for dy in [-1, 0, 1]:
-                nx = x + dx
-                ny = y + dy
-                if (0 <= nx and nx < m and 0 <= ny and ny < n):
-                    if (a[ny][nx] == 'W'):
-                        dfs(nx, ny)
-        return
-
-    count = 0
-    for y in range(n):
-        for x in range(m):
-            if a[y][x] == "W":
-                dfs(y, x)
-                count += 1
-    print(count)
-
-
-# a[i][j]いらんくね
-# def dfs(a, w, i, j):
-#     a[i][j] = "."
-#
-#     for k in range(i - 1, i + 2):
-#         for l in range(j-1, j+2):
-#             if a[i][j] == "W":
-#                 dfs(a, a[k][l], i, j)
-#     return
-
+    lake_count = 0
+    for i in range(0, field_x_length):
+        for j in range(0, field_y_length):
+            if (fs[i][j] == 'W'):
+                dfs(i, j)
+                lake_count += 1
+    print(lake_count)
 
 # if __name__ == "__main__":  # 提出時のみ復活させる
 #     resolve()
