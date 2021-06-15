@@ -48,7 +48,7 @@ def bfs():
         if p[0] == gy and p[1] == gx:
             break
 
-        # 移動方向の判定と格納
+        # 移動方向の判定と格納 → ここがBFSの本質
         for i in range(4):
             by = dy[i] + p[0]
             bx = dx[i] + p[1]
