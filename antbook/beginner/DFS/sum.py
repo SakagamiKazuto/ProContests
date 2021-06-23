@@ -1,12 +1,14 @@
-def resolve():
-    print(fib(int(input())))
+def dfs(n, ans):
+    if n <= 1:
+        return n
 
-# fib is
-# an = an-1 + an-2 && a1=1, a0=0
-def fib(i):
-    if i <= 1:
-        return i
-    return fib(i-1) + fib(i-2)
+    ans += n + dfs(n - 1, ans)
+    return ans
+
+
+def resolve():
+    print(dfs(int(input()), 0))
+
 
 # if __name__ == "__main__":  # 提出時のみ復活させる
 #     resolve()
@@ -28,12 +30,7 @@ class TestClass(unittest.TestCase):
 
     def test_入力例_1(self):
         input = """5"""
-        output = """5"""
-        self.assertIO(input, output)
-
-    def test_入力例_2(self):
-        input = """7"""
-        output = """13"""
+        output = """15"""
         self.assertIO(input, output)
 
 
