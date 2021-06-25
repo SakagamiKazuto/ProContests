@@ -1,26 +1,60 @@
-T = []
-N = 0
+import sys
+
+sys.setrecursionlimit(1000000)
+
+H, W = 10, 10
+A = []
+used = []
 
 
-def dfs(i, sum1, sum2):
-    # ベースケース
-    if i == N:
-        return max(sum1, sum2)
+# "1つだけ埋めるとしたら"の仮定すっ飛ばしてたのがすべての間違いだった...
+def in_area(dh, dw):
+    return (0 <= dh < H) and (0 <= dw < W)
+
+
+def dfs(h, w, is_normal, filled):
+    used[h][w] = True
+    # 4方向ベクトル ↑,→,↓,←
+    dhw = [[-1, 0], [0, 1], [1, 0], [0, -1]]
 
     # 再帰ステップ
-    return min(dfs(i + 1, sum1 + T[i], sum2), dfs(i + 1, sum1, sum2 + T[i]))
+    # if not filled:
+    for hw in dhw:
+        i = h + hw[0]
+        j = w + hw[1]
+        if is_normal:
+            if in_area(i, j) and not used[i][j] and A[i][j] == "o":
+                dfs(i, j, True, filled)
+            if in_area(i, j) and not used[i][j] and A[i][j] == "x":
+                dfs(i, j, False, filled)
+        else:
+            if in_area(i, j) and not used[i][j] and A[i][j] == "o":
+                A[h][w] = "o"
+                dfs(i, j, True, True)
 
 
 def resolve():
-    global T, N
-    N = int(input())
-    T = []
-    for _ in range(N):
-        T.append(int(input()))
-    print(dfs(0, 0, 0))
+    global H, W, A, used
+    A, used = [], []
+    for _ in range(H):
+        A.append(list(input()))
+    used = [[False] * W for _ in range(H)]
+
+    count = 0
+    for h in range(H):
+        for w in range(W):
+            if not used[h][w] and A[h][w] == "o":
+                dfs(h, w, True, False)
+                count += 1
+
+    if count == 1:
+        print("YES")
+    else:
+        print("NO")
 
 
-if __name__ == "__main__":  # 提出時のみ復活させる
+
+if __name__ == "__main__":
     resolve()
 
 import sys
@@ -39,26 +73,59 @@ class TestClass(unittest.TestCase):
         self.assertEqual(out, output)
 
     def test_入力例1(self):
-        input = """4
-4
-6
-7
-10"""
-        output = """14"""
+        input = """xxxxxxxxxx
+xoooooooxx
+xxoooooxxx
+xxxoooxxxx
+xxxxoxxxxx
+xxxxxxxxxx
+xxxxoxxxxx
+xxxoooxxxx
+xxoooooxxx
+xxxxxxxxxx"""
+        output = """YES"""
         self.assertIO(input, output)
 
     def test_入力例2(self):
-        input = """3
-1
-2
-4"""
-        output = """4"""
+        input = """xxxxxxxxxx
+xoooooooxx
+xxoooooxxx
+xxxoooxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxoooxxxx
+xxoooooxxx
+xxxxxxxxxx"""
+        output = """NO"""
         self.assertIO(input, output)
 
     def test_入力例3(self):
-        input = """1
-29"""
-        output = """29"""
+        input = """xxxxoxxxxx
+xxxxoxxxxx
+xxxxoxxxxx
+xxxxoxxxxx
+ooooxooooo
+xxxxoxxxxx
+xxxxoxxxxx
+xxxxoxxxxx
+xxxxoxxxxx
+xxxxoxxxxx"""
+        output = """YES"""
+        self.assertIO(input, output)
+
+    def test_入力例4(self):
+        input = """xxxxxxxxxx
+oooooooooo
+xxxxxxxxxx
+oooooooooo
+xxxxxxxxxx
+oooooooooo
+xxxxxxxxxx
+oooooooooo
+xxxxxxxxxx
+oooooooooo"""
+        output = """NO"""
         self.assertIO(input, output)
 
 

@@ -1,9 +1,26 @@
+from operator import itemgetter
+
+
 def resolve():
-    print('Yes')
+    n = int(input())
+    cs = []
+    for _ in range(n):
+        x, l = map(int, input().split())
+        cs.append([x - l, x + l-1])
+
+    coordinates = sorted(cs, key=itemgetter(1))
+
+    now = coordinates[0][1]
+    ans = 1
+    for i in range(1, len(coordinates)):
+        if coordinates[i][0] > now:
+            now = coordinates[i][1]
+            ans += 1
+    print(ans)
 
 
-# if __name__ == "__main__":
-#     resolve()
+if __name__ == "__main__":
+    resolve()
 
 import sys
 from io import StringIO
@@ -21,18 +38,30 @@ class TestClass(unittest.TestCase):
         self.assertEqual(out, output)
 
     def test_入力例_1(self):
-        input = """3 5"""
-        output = """Yes"""
+        input = """4
+2 4
+4 3
+9 3
+100 5"""
+        output = """3"""
         self.assertIO(input, output)
 
+
     def test_入力例_2(self):
-        input = """16 2"""
-        output = """No"""
+        input = """2
+8 20
+1 10"""
+        output = """1"""
         self.assertIO(input, output)
 
     def test_入力例_3(self):
-        input = """12 15"""
-        output = """No"""
+        input = """5
+10 1
+2 1
+4 1
+6 1
+8 1"""
+        output = """5"""
         self.assertIO(input, output)
 
 

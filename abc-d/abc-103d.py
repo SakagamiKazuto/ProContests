@@ -1,5 +1,18 @@
+from operator import itemgetter
+
+
 def resolve():
-    print('Yes')
+    N, M = map(int, input().split(" "))
+    ab = sorted([tuple(map(int, input().split())) for _ in range(M)], key=itemgetter(1))
+
+    removed = -1
+    ans = 0
+    for a, b in ab:
+        # bi < ajな区間をあぶり出す
+        if a > removed:
+            removed = b - 1
+            ans += 1
+    print(ans)
 
 
 # if __name__ == "__main__":
@@ -21,18 +34,35 @@ class TestClass(unittest.TestCase):
         self.assertEqual(out, output)
 
     def test_入力例_1(self):
-        input = """3 5"""
-        output = """Yes"""
+        input = """5 2
+1 4
+2 5"""
+        output = """1"""
         self.assertIO(input, output)
 
     def test_入力例_2(self):
-        input = """16 2"""
-        output = """No"""
+        input = """9 5
+1 8
+2 7
+3 5
+4 6
+7 9"""
+        output = """2"""
         self.assertIO(input, output)
 
     def test_入力例_3(self):
-        input = """12 15"""
-        output = """No"""
+        input = """5 10
+1 2
+1 3
+1 4
+1 5
+2 3
+2 4
+2 5
+3 4
+3 5
+4 5"""
+        output = """4"""
         self.assertIO(input, output)
 
 
