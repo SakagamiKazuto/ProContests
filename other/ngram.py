@@ -1,11 +1,37 @@
+s = ""
+n = 0
+ngram = set()
+
+
+def rec(i, sn):
+    # ベースケース
+    if i == n:
+        ngram.add(sn)
+        return
+
+    # 再帰ステップ
+    rec(i + 1, sn + s[i])
+    rec(i + 1, sn)
+
+
 def resolve():
+    global s, n
     s = input()
-    n = len(s) + 1
-    ans = []
-    for i in range(1, n):
-        for j in range(n - i):
-            ans.append(''.join(s[j:j + i]))
-    print(ans)
+    n = len(s)
+    rec(0, "")
+    print(sorted(list(ngram)))
+
+
+# def resolve():
+#     s = input()
+#     n = len(s) + 1
+#     ans = []
+#     for i in range(1, n):
+#         # 始点なのでn-1でいい
+#         for j in range(n - i):
+#             # これだとnode_depthが増えたときに対応できない→再帰
+#             ans.append(''.join(s[j:j + i]))
+#     print(ans)
 
 
 # if __name__ == "__main__":
@@ -28,7 +54,12 @@ class TestClass(unittest.TestCase):
 
     def test_入力例_1(self):
         input = """abc"""
-        output = """['a', 'b', 'c', 'ab', 'bc', 'abc']"""
+        output = """['', 'a', 'ab', 'abc', 'ac', 'b', 'bc', 'c']"""
+        self.assertIO(input, output)
+
+    def test_入力例_2(self):
+        input = """abcd"""
+        output = """['', 'a', 'ab', 'abc', 'abcd', 'abd', 'ac', 'acd', 'ad', 'b', 'bc', 'bcd', 'bd', 'c', 'cd', 'd']"""
         self.assertIO(input, output)
 
 
